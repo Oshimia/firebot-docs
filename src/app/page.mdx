@@ -1,5 +1,5 @@
 import { Guides } from '@/components/Guides'
-import { Resources } from '@/components/Resources'
+import { Concepts } from '@/components/Concepts'
 import { HeroPattern } from '@/components/HeroPattern'
 
 export const metadata = {
@@ -8,40 +8,22 @@ export const metadata = {
     'Learn everything there is to know about Firebot, from the basics to advanced features.',
 }
 
-export const sections = [
-  { title: 'Guides', id: 'guides' },
-  { title: 'Resources', id: 'resources' },
-]
-
 <HeroPattern />
 
 <Note type="warning">
   Much of this web site is still a work-in-progress, and we are working hard to try and get all of the documentation migrated here. In the meantime, our [Github Wiki](https://github.com/crowbartools/Firebot/wiki) contains a vast selection of <i>historical</i> documentation.
 </Note>
 
-# Firebot Documentation
+# Welcome to Firebot
 
-Firebot is a fully featured open-source bot that can help level up your streams. {{ className: 'lead' }}
+Firebot is a powerful, all-in-one bot for Twitch streamers. Built with a modern interface and packed with features, Firebot helps you create interactive experiences for your viewers through chat commands, events, timers, channel rewards, and much more—all without requiring any programming language knowledge. {{ className: 'lead' }}
+
+New to Firebot? Start here to get up and running quickly, then explore the core concepts that make Firebot powerful.
 
 <div className="not-prose mb-16 mt-6 flex gap-3">
   <Button href="/quickstart" arrow="right">
     <>Quickstart</>
   </Button>
-  {/* <Button href="/sdks" variant="outline">
-    <>Explore SDKs</>
-  </Button> */}
 </div>
 
-{/* ## Getting started {{ anchor: false }} */}
-
-{/* To get started, create a new application in your [developer settings](#), then read about how to make requests for the resources you need to access using our HTTP APIs or dedicated client SDKs. When your integration is ready to go live, publish it to our [integrations directory](#) to reach the Protocol community. {{ className: 'lead' }} */}
-
-{/* <div className="not-prose">
-  <Button href="/sdks" variant="text" arrow="right">
-    <>Get your API key</>
-  </Button>
-</div> */}
-
-{/* <Guides /> */}
-
-{/* <Resources /> */}
+<Concepts />
