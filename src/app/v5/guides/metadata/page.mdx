@@ -4,13 +4,13 @@ Metadata allows you to store viewer specific data for use in Firebot.
 
 You can use metadata by using the  **Set User Metadata** and **Remove User Metadata** effects, found in the “Select New Effect” box when adding a new effect. They’re listed under the “ALL” and “Scripting” tabs.  Metadata works by storing data (basically text) associated with a specific viewer's username.
 
-Using Metadata you can tailor interactive experiences to individual viewers like tracking stats, preferences, or progress within a game or loyalty system. It works similarly to [Custom Variables](/v5\guides\custom-variables\page.mdx), but custom variables are not associated with a single viewer, and unless you have changed the settings do not persist when you close Firebot, meaning that when you close Firebot all data is deleted. Metadata on the other hand is stored for each user persistently and can be used across Firebot sessions. 
+Using Metadata you can tailor interactive experiences to individual viewers like tracking stats, preferences, or progress within a game or loyalty system. It works similarly to [Custom Variables](../custom-variables/page.mdx), but custom variables are not associated with a single viewer, and unless you have changed the settings do not persist when you close Firebot, meaning that when you close Firebot all data is deleted. Metadata on the other hand is stored for each user persistently and can be used across Firebot sessions. 
 
 ## **Configuring Metadata Effects**
 
 ### **Username**
 
-Specify the username for whom you want to configure or modify the metadata.  This should generally be the `$user` variable to affect the user triggering the event.
+Specify the username for who you want to configure or modify the metadata.  This should generally be the `$user` variable to affect the user triggering the event.
 
 ### **Metadata Key**
 
@@ -22,36 +22,45 @@ This is the actual value you want to store under the specified Metadata Key. Thi
 
 ### **Advanced (Optional)**
 
-You can click on the blue "Advanced" text to open up this section, which enables you to directly access or modify specific parts of complex data structures, such as arrays or objects, associated with the Metadata key. This is designed for advanced users already familiar with property paths.
-Most users can skip this section.
+You can click on the blue "Advanced" text to open the **Property Path** section. This enables you to directly access or modify specific parts of complex data structures, such as arrays or objects, already saved under the Metadata Key.
 
-This is used for accessing or modifying specific parts of complex data structures like arrays or objects. Most users can skip this section, but here’s a quick overview:
+**Note:** If the metadata key does not already contain an object or array, entering a Property Path will do nothing.
+
+When creating a Property Path, use **dot notation** to define which specific property or index you want to update:
 
 - **Array Example:** `["apple", "banana", "cherry"]`  
-  Access "banana" with `$$myArray[1]`.
+  To target "banana", the Property Path is: `1`
 
 - **Object Example:** `{"fruit":"apple", "color":"red"}`  
-  Access "apple" with `$$myObject[fruit]`.
+  To target "apple", the Property Path is: `fruit`
 
-- **Array of Objects Example:**  
-  `[{"fruit":"apple"}, {"fruit":"banana"}]`  
-  Access "apple" with `$$myArray[0, fruit]`.
-
-You can use the Property Path field to update a specific part of the variable without overwriting the entire structure.
+- **Array of Objects Example:** `[{"fruit":"apple"}, {"fruit":"banana"}]`  
+  To target "apple" in the first object, the Property Path is: `0.fruit`
 
 <Note type="info">
-    **Example**: To change the color of a fruit from red to yellow in `{"fruit":"apple", "color":"red"}`, set `Variable Name` to your object’s name, `Variable Data` to `yellow`, and `Property Path` to `color`.
+    **Example**: To change the color of a fruit from red to yellow within an existing metadata object `{"fruit":"apple", "color":"red"}`:
+    
+    *   **Metadata Key:** (The name of your metadata key)
+    *   **Data:** `yellow`
+    *   **Property Path:** `color`
 </Note>
 
 ## **Accessing and Using Metadata**
 
 Metadata is accessed using the `$userMetadata` replace variable.
 
-*   `$userMetadata[key]`
-*   `$userMetadata[key, propertyPath]`
+* `$userMetadata[username, metadataKey]`
+Get the metadata associated with the user.
+
+**Other examples**
+* `$userMetadata[username, metadataKey, defaultValue]` 
+Provide a default value if one doesn't exist for the user.
+
+* `$userMetadata[username, metadataKey, null, propertyPath]` 
+Provide a property path (using dot notation) or array index as a second argument.
 
 <Note type="info">
-  **Example:** Once you have used a `Set User Metadata` effect to set the user data for one of your viewers you can use `$userMetadata[key]` to display a viewer's favorite color, if for example you saved the metadata as "favouriteColor" you would set  `Key` to `favoriteColor`, and use `$userMetadata[favoriteColor]` in a chat message or overlay effect.
+  **Example:** Once you have used a `Set User Metadata` effect to set the user data for one of your viewers you can use `$userMetadata[$user, metadataKey]` to display a viewer's favorite color, if for example you saved the metadata as "favoriteColor" you would set  `metadataKey` to `favoriteColor`, and use `$userMetadata[$user, favoriteColor]` in a chat message or overlay effect.
 </Note>
 
 ## Example: Tracking Viewer Stats
@@ -63,7 +72,7 @@ Metadata is accessed using the `$userMetadata` replace variable.
 
     *   `Username`: `$user` (This ensures the metadata is stored for the user who triggered the command/reward)
     *   `Metadata Key`: `checkInCount`
-    *   `Data`: `$numberMath[$userMetadata[checkInCount] + 1]`
+    *   `Data`: `$math[$userMetadata[$username, checkInCount] + 1]`
 
     Every time this event is triggered, the user's `checkInCount` will increase by one.
 3.  **Display the Stat:** In a chat message or overlay effect, use the following:
@@ -72,6 +81,24 @@ Metadata is accessed using the `$userMetadata` replace variable.
 
     This will display the number of times the user has triggered the command or reward.
 
-    ## Viewing and Managing Metadata
+## **Removing User Metadata**
 
-    You can view and manage metadata stored for a user by going to the "VIEWERS" tab in Firebot, selecting a viewer and looking at the "METADATA" table available there. You can see what metadata has been stored on the viewer, what the keys are to that data, and the data itself. You can also edit or delete metadata directly from this table. 
+If you need to clear data for a specific user (for example, resetting a viewer's stats or clearing a specific preference), you can use the **Remove User Metadata** effect.
+
+### **Configuring the Effect**
+
+### **Username**
+
+Specify the username of the viewer whose metadata you want to remove. Use `$user` to affect the user currently triggering the command or event.
+
+### **Metadata Key**
+
+Enter the specific **Key** of the metadata you wish to delete.
+
+<Note type="warning">
+  **Note:** This effect completely removes the entry associated with the specified key from the user's database profile. If you stored a complex object or array under this key, the entire structure will be deleted.
+</Note>
+
+## Viewing and Managing Metadata
+
+  You can view and manage metadata stored for a user by going to the "VIEWERS" tab in Firebot, selecting a viewer and looking at the "METADATA" table available there. You can see what metadata has been stored on the viewer, what the keys are to that data, and the data itself. You can also edit or delete metadata directly from this table. 
