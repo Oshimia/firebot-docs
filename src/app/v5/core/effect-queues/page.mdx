@@ -1,0 +1,100 @@
+export const metadata = {
+  title: 'Effect Queues',
+  description:
+    'Learn how to use Effect Queues to control the order and timing of alerts and other effect lists in Firebot.',
+}
+
+# Effect Queues
+
+Effect Queues in Firebot help you control **when** and **how** effect lists play so your alerts and other on‑stream actions stay organized instead of firing on top of each other.
+
+Rather than triggering every effects list immediately, you can assign them to a queue and let Firebot play them one at a time (or on a interval), ensuring each alert gets its own moment on stream.
+
+You can find and manage queues in two places:
+
+- The **Effect Queues** tab, in the main navigation sidebar under the **Management** category
+- The **QUEUE** selector at the top of any effects list
+
+If an effects list is not assigned to a queue, the queue dropdown will say **Not set**. Click the `V` next to **Not set** to assign the list to an existing queue or create a new one. Once assigned, the queue name will be shown there, and you can click the `V` again at any time to change it.
+
+## Creating an Effect Queue
+
+There are two ways to create a new queue:
+
+1. From the **Effect Queues** tab, click the blue **`+ New Effect Queue`** button.
+2. From any effects list, open the **QUEUE** dropdown and select **Create new queue**.
+
+Both paths open the same configuration options for the new queue.
+
+## Configuring an Effect Queue
+
+When creating or editing a queue you’ll configure two main things: **Name** and **Mode**.
+
+### Name
+
+Give the queue a clear, descriptive name so you can easily recognize its purpose later (for example: `Main Alerts`, `Channel Point Redemptions`, or `Hype Train Overlay`).
+
+### Mode
+
+Queues can run in one of four modes:
+
+**Sequential**
+
+Runs effect lists in the order they are added to the queue.
+
+- Optional **Interval/Delay (secs)** controls how long Firebot waits between finishing one effects list and starting the next (defaults to `0` seconds).
+- Each effects list added to the queue can be marked as having **priority**. Priority lists are inserted ahead of non‑priority items already in the queue.
+
+Use this when you want alerts to play one after another without overlapping, in the order they were triggered.
+
+**Custom**
+
+Lets you control exactly how long the queue waits after triggering a specific effects list before moving on.
+
+When you assign an effects list to a Custom queue, additional options appear underneath the queue dropdown:
+
+- **Effects Duration** – How long (in seconds) the queue should wait after triggering this list before it is considered "done" and the next item is allowed to run.
+- **Priority** – Just like Sequential mode, priority items are inserted in front of non‑priority items in the queue.
+
+Use this when different alerts have different lengths (for example, some overlays or videos are much longer than others) and you want the queue timing to match the actual duration of the content.
+
+**Interval**
+
+Runs effect lists from the queue at a fixed time interval.
+
+- The queue has an **Interval/Delay (secs)** value that controls how often it should run the next item.
+- When you add an effects list, you can still mark it as **priority** so that it will be inserted ahead of non‑priority items.
+
+Use this when you want queued content to run on a schedule, such as rotating alerts or effects at regular intervals.
+
+**Manual**
+
+Manual queues never advance on their own. The next effects list in the queue only runs when you explicitly tell it to.
+
+- Manual queues are advanced using the **Trigger Manual Effect Queue** effect.
+- Each time that effect runs (and targets a specific queue), Firebot will pop and run the next effects list in that queue.
+
+Use this when you want full control over **exactly when** the next alert or sequence plays—for example:
+
+- Viewer **redeem queues** where you approve and play one redemption at a time
+- **Song requests** or other request-style queues
+- Any other controlled queues where you or a moderator want to advance alerts one at a time via a hotkey or command
+
+## Effect Queue Monitor (v5.65+)
+
+As of Firebot **v5.65**, there is a dedicated **Effect Queue Monitor** window that gives you a real‑time view into what your queues are doing.
+
+The Effect Queue Monitor opens as a separate window and shows:
+
+- A live list of **all Effect Queues** and their current state
+- Which **effects list** is currently running in each queue
+- The **upcoming** items waiting in the queue
+- A breakdown of **each effect** inside the currently running list, including relevant data/values for those effects
+
+This is especially useful when you are:
+
+- Debugging why a particular alert or sequence isn’t running when you expect
+- Monitoring long or complex queues (such as redeems, requests, alerts, etc.)
+- Verifying that effect data and variables are being passed as expected through a list
+
+You can open the Effect Queue Monitor by clicking the Open Monitor button on the Effect Queues tab.
